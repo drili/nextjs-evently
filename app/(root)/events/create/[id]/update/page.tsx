@@ -13,7 +13,7 @@ const UpdateEvent = () => {
             </section>
 
             <div className="wrapper my-8">
-                <EventForm userId={userId} type="update" />
+                <EventForm userId={userId} type="Update" />
             </div>
         </>
     )
