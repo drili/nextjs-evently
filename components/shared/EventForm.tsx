@@ -1,6 +1,6 @@
 "use client"
 
-import React from 'react'
+import React, { useState } from 'react'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
@@ -15,6 +15,8 @@ import { Input } from "@/components/ui/input"
 import { eventDefaultValues } from '@/constants'
 import Dropdown from './Dropdown'
 import { Textarea } from '../ui/textarea'
+import { FileUploader } from './FileUploader'
+import Image from 'next/image'
 
 type EventFormProps = {
     userId: string;
@@ -23,6 +25,7 @@ type EventFormProps = {
 
 const EventForm = ({ userId, type }: EventFormProps) => {
     const initialValues = eventDefaultValues
+    const [files, setFiles] = useState<File[]>([])
 
     const form = useForm<z.infer<typeof eventFormSchema>>({
         resolver: zodResolver(eventFormSchema),
@@ -91,7 +94,35 @@ const EventForm = ({ userId, type }: EventFormProps) => {
                             render={({ field }) => (
                                 <FormItem className='w-full'>
                                     <FormControl className='h-72'>
-                                        {/* TODO: File uploader */}
+                                        <FileUploader
+                                            onFieldChange={field.onChange}
+                                            imageUrl={field.value}
+                                            setFiles={setFiles}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </div>
+
+                    <div className='flex flex-col gap-5 md:flex-row'>
+                        <FormField
+                            control={form.control}
+                            name="location"
+                            render={({ field }) => (
+                                <FormItem className='w-full'>
+                                    <FormControl>
+                                        <div className='flex-center h-[54px] w-full overflow-hidden rounded-full bg-gray-50 px-4 py-2'>
+                                            <Image
+                                                alt=""
+                                                src="/assets/icons/location-grey.svg"
+                                                width={24}
+                                                height={24}
+                                            />
+                                            <Input placeholder="Event Location or Online" {...field}
+                                                className='input-field' />
+                                        </div>
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
