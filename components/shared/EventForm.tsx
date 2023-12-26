@@ -14,6 +14,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { eventDefaultValues } from '@/constants'
 import Dropdown from './Dropdown'
+import { Textarea } from '../ui/textarea'
 
 type EventFormProps = {
     userId: string;
@@ -58,10 +59,39 @@ const EventForm = ({ userId, type }: EventFormProps) => {
                             render={({ field }) => (
                                 <FormItem className='w-full'>
                                     <FormControl>
-                                        <Dropdown 
+                                        <Dropdown
                                             onChangeHandler={field.onChange}
                                             value={field.value}
                                         />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </div>
+
+                    <div className='flex flex-col gap-5 md:flex-row'>
+                        <FormField
+                            control={form.control}
+                            name="description"
+                            render={({ field }) => (
+                                <FormItem className='w-full'>
+                                    <FormControl className='h-72'>
+                                        <Textarea placeholder="Description" {...field}
+                                            className='text-area rounded-2xl' />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
+                        <FormField
+                            control={form.control}
+                            name="imageUrl"
+                            render={({ field }) => (
+                                <FormItem className='w-full'>
+                                    <FormControl className='h-72'>
+                                        {/* TODO: File uploader */}
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
