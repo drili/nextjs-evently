@@ -25,7 +25,7 @@ import { FileUploader } from './FileUploader'
 import { Checkbox } from '../ui/checkbox'
 
 type EventFormProps = {
-    userId: string;
+    userId: string | { userId: string };
     type: "Create" | "Update"
 }
 
