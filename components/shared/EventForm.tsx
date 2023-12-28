@@ -76,7 +76,7 @@ const EventForm = ({ userId, type, event, eventId }: EventFormProps) => {
                     router.push(`/events/${newEvent._id}`)
                 }
 
-                console.log({newEvent});
+                // console.log({newEvent});
                 
             } catch (error) {
                 console.log(error);
