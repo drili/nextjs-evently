@@ -6,24 +6,25 @@ import { Button } from "@/components/ui/button"
 import { getEventsByUser } from "@/lib/actions/event.actions"
 import { getOrdersByUser } from "@/lib/actions/order.actions"
 import { IOrder } from "@/lib/database/models/order.model"
+import { SearchParamProps } from "@/types"
 
-const ProfilePage = async () => {
+const ProfilePage = async ({ searchParams }: SearchParamProps) => {
     const { sessionClaims } = auth()
     const userId = (sessionClaims?.userId as { userId?: string })?.userId;
 
+    const ordersPage = Number(searchParams?.ordersPage) || 1
+    const eventsPage = Number(searchParams?.eventsPage) || 1
     
     const organizedEvents = await getEventsByUser({
         userId: userId as string,
-        page: 1
+        page: ordersPage,
     })
 
     const orders = await getOrdersByUser({
         userId: userId as string,
-        page: 1,
+        page: eventsPage,
     })
     const orderedEvents = orders?.data.map((order: IOrder) => order.event) || []
-
-    console.log({orderedEvents});
 
     return (
         <>
@@ -46,9 +47,9 @@ const ProfilePage = async () => {
                     emptyStateSubtext="No worries..."
                     collectionType="My_Tickets"
                     limit={3}
-                    page={1}
+                    page={ordersPage}
                     urlParamName="ordersPage"
-                    totalPages={2}
+                    totalPages={orders?.totalPages}
                 />
             </section>
 
@@ -71,9 +72,9 @@ const ProfilePage = async () => {
                     emptyStateSubtext="No worries..."
                     collectionType="Events_Organized"
                     limit={6}
-                    page={1}
+                    page={eventsPage}
                     urlParamName="eventsPage"
-                    totalPages={2}
+                    totalPages={organizedEvents?.totalPages}
                 />
             </section>
         </>
