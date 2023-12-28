@@ -4,6 +4,8 @@ import { auth } from "@clerk/nextjs"
 import Collection from "@/components/shared/Collection"
 import { Button } from "@/components/ui/button"
 import { getEventsByUser } from "@/lib/actions/event.actions"
+import { getOrdersByUser } from "@/lib/actions/order.actions"
+import { IOrder } from "@/lib/database/models/order.model"
 
 const ProfilePage = async () => {
     const { sessionClaims } = auth()
@@ -14,6 +16,14 @@ const ProfilePage = async () => {
         userId: userId as string,
         page: 1
     })
+
+    const orders = await getOrdersByUser({
+        userId: userId as string,
+        page: 1,
+    })
+    const orderedEvents = orders?.data.map((order: IOrder) => order.event) || []
+
+    console.log({orderedEvents});
 
     return (
         <>
@@ -31,7 +41,7 @@ const ProfilePage = async () => {
 
             <section className="wrapper my-8">
                 <Collection
-                    data={[]}
+                    data={orderedEvents}
                     emptyTitle="No event tickets purchased yet"
                     emptyStateSubtext="No worries..."
                     collectionType="My_Tickets"
